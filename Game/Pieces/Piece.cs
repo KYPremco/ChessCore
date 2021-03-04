@@ -8,7 +8,7 @@ namespace OnlineChessCore.Game.Pieces
 {
     public abstract class Piece
     {
-        protected Coords Coords { get; set; }
+        internal Coords Coords { get; set; }
         
         public virtual EPiece EPiece { get; }
         
