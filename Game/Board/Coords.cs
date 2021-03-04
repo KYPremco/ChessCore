@@ -75,18 +75,16 @@ namespace OnlineChessCore.Game.Board
             dictionary.Add(Coords.G8, new Knight(Coords.G8, Player.Black));
             dictionary.Add(Coords.H8, new Rook(Coords.H8, Player.Black));
 
-            // for (int i = (int)Coords.A7; i < (int)Coords.A7 + 8; i++)
-            // {
-            //     dictionary.Add((Coords)i, new Pawn((Coords)i, Player.Black));
-            // }
-            //
-            // for (int i = (int)Coords.A2; i < (int)Coords.A2 + 8; i++)
-            // {
-            //     dictionary.Add((Coords)i, new Pawn((Coords)i, Player.White));
-            // }
+            for (int i = (int)Coords.A7; i < (int)Coords.A7 + 8; i++)
+            {
+                dictionary.Add((Coords)i, new Pawn((Coords)i, Player.Black));
+            }
             
-            dictionary.Add(Coords.E7, new Pawn(Coords.E7, Player.White));
-            
+            for (int i = (int)Coords.A2; i < (int)Coords.A2 + 8; i++)
+            {
+                dictionary.Add((Coords)i, new Pawn((Coords)i, Player.White));
+            }
+
             dictionary.Add(Coords.A1, new Rook(Coords.A1, Player.White));
             dictionary.Add(Coords.B1, new Knight(Coords.B1, Player.White));
             dictionary.Add(Coords.C1, new Bishop(Coords.C1, Player.White));
