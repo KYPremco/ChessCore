@@ -9,7 +9,7 @@ namespace OnlineChessCore.Game.Pieces
     {
         public override EPiece EPiece { get; } = EPiece.King;
         
-        private bool HasMoved { get; set; }
+        internal bool HasMoved { get; private set; }
 
         internal List<Attack> checks { get; }
 
