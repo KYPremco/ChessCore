@@ -7,6 +7,8 @@ namespace OnlineChessCore.Game.Pieces
     public class Pawn : Piece
     {
         public override EPiece EPiece { get; } = EPiece.Pawn;
+        
+        private bool HasMoved { get; set; }
 
         public Pawn(Coords coords, Player player) : base(coords, player)
         {
@@ -22,13 +24,18 @@ namespace OnlineChessCore.Game.Pieces
                 coordsList.AddRange(HandleCoords(board, -1, false, (c) => c - 8, updateBlockingPieces));
                 coordsList.AddRange(HandleCoords(board, 7, true, (c) => c - 7, updateBlockingPieces));
                 coordsList.AddRange(HandleCoords(board, 0, true, (c) => c - 9, updateBlockingPieces));
-
+                
+                if(!HasMoved)
+                    coordsList.AddRange(HandleCoords(board, -1, false, (c) => c - 16, updateBlockingPieces));
             }
             else
             {
                 coordsList.AddRange(HandleCoords(board, -1, false, (c) => c + 8, updateBlockingPieces));
                 coordsList.AddRange(HandleCoords(board, 0, true, (c) => c + 7, updateBlockingPieces));
                 coordsList.AddRange(HandleCoords(board, 7, true, (c) => c + 9, updateBlockingPieces));
+                
+                if(HasMoved)
+                    coordsList.AddRange(HandleCoords(board, -1, false, (c) => c + 16, updateBlockingPieces));
             }
 
             return coordsList;
@@ -50,6 +57,12 @@ namespace OnlineChessCore.Game.Pieces
             if(updateBlockingPieces)
                 HandleTargetKing(board, (Coords) op((int) Coords));
             return FilterKingProtectionCoords(coordsList);
+        }
+        
+        internal override void Move(Coords coords)
+        {
+            Coords = coords;
+            HasMoved = true;
         }
     }
 }
