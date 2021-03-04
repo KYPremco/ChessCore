@@ -34,7 +34,7 @@ namespace OnlineChessCore.Game.Pieces
                 coordsList.AddRange(HandleCoords(board, 0, true, (c) => c + 7, updateBlockingPieces));
                 coordsList.AddRange(HandleCoords(board, 7, true, (c) => c + 9, updateBlockingPieces));
                 
-                if(HasMoved)
+                if(!HasMoved)
                     coordsList.AddRange(HandleCoords(board, -1, false, (c) => c + 16, updateBlockingPieces));
             }
 
