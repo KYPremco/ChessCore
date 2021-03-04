@@ -65,8 +65,8 @@ namespace OnlineChessCore.Game
         {
             SwitchPlayer();
 
-            Board.BlackKing.checks.Clear();
-            Board.WhiteKing.checks.Clear();
+            Board.BlackKing.Checks.Clear();
+            Board.WhiteKing.Checks.Clear();
             UpdateBlockingPieces(Board.WhitePieces, Board.BlackPieces);
             UpdateBlockingPieces(Board.BlackPieces, Board.WhitePieces);
         }
@@ -90,11 +90,11 @@ namespace OnlineChessCore.Game
                 return GetKingAvailableCoords((King) piece);
 
             King king = piece.Side == Player.White ? Board.WhiteKing : Board.BlackKing;
-            if (king.checks.Count == 0)
+            if (king.Checks.Count == 0)
                 return piece.AvailableCoords(Board.Tiles, xRay);
 
             return piece.AvailableCoords(Board.Tiles, xRay)
-                .Intersect(king.checks.Where(x => !x.IsGhost).Select(x => x.Coordinate))
+                .Intersect(king.Checks.Where(x => !x.IsGhost).Select(x => x.Coordinate))
                 .ToList();
         }
 
@@ -128,7 +128,7 @@ namespace OnlineChessCore.Game
                 .Except(king.Side == Player.White
                     ? Board.BlackKing.AvailableCoords(Board.Tiles)
                     : Board.WhiteKing.AvailableCoords(Board.Tiles))
-                .Except(king.checks.Where(x => x.IsGhost).Select(x => x.Coordinate))
+                .Except(king.Checks.Where(x => x.IsGhost).Select(x => x.Coordinate))
                 .Concat(GetKingCastlingCoords(king))
                 .ToList();
         }
@@ -137,7 +137,7 @@ namespace OnlineChessCore.Game
         {
             List<Coords> castling = new List<Coords>();
 
-            if (king.HasMoved || king.checks.Count > 0)
+            if (king.HasMoved || king.Checks.Count > 0)
                 return castling;
             
             List<Coords> availableAttacks = GetAllAvailableCoords(king.Side == Player.White ? Player.Black : Player.White, true);

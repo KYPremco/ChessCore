@@ -11,11 +11,11 @@ namespace OnlineChessCore.Game.Pieces
         
         internal bool HasMoved { get; private set; }
 
-        internal List<Attack> checks { get; }
+        internal List<Attack> Checks { get; }
 
         public King(Coords coords, Player player) : base(coords, player)
         {
-            checks = new List<Attack>();
+            Checks = new List<Attack>();
         }
 
         protected override List<Coords> AvailableCoords(Tile[] board, bool xRay, bool updateBlockingPieces)

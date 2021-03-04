@@ -86,7 +86,7 @@ namespace OnlineChessCore.Game.Pieces
             if (!board.HasPawnOnTile(coordinate) || board[(int) coordinate]?.Piece.EPiece != EPiece.King)
                 return;
             
-            ((King) board[(int) coordinate].Piece).checks.Add(new Attack(Coords, false));
+            ((King) board[(int) coordinate].Piece).Checks.Add(new Attack(Coords, false));
         }
         
         protected void HandleTargetKing(Tile[] board, Func<int, int, int> op, int corner, int rotation)
@@ -94,7 +94,7 @@ namespace OnlineChessCore.Game.Pieces
             if (board[op((int) Coords, rotation)].Piece.EPiece != EPiece.King)
                 return;
 
-            ((King) board[op((int) Coords, rotation)].Piece).checks.AddRange(GetAttackLine(board, op, rotation, corner));
+            ((King) board[op((int) Coords, rotation)].Piece).Checks.AddRange(GetAttackLine(board, op, rotation, corner));
         }
         
         private List<Attack> GetAttackLine(Tile[] board, Func<int, int, int> op, int rotation, int corner)
