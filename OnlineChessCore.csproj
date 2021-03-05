@@ -59,12 +59,6 @@
         <Compile Include="Game\Pieces\Rook.cs" />
         <Compile Include="Game\Player.cs" />
         <Compile Include="Game\Struct\Attack.cs" />
-        <Compile Include="Network\Listeners.cs" />
-        <Compile Include="Network\Packages\Login.cs" />
-        <Compile Include="Network\Packages\Singletons\SingleBool.cs" />
-        <Compile Include="Network\Packages\Singletons\SingleInt.cs" />
-        <Compile Include="Network\Packages\Singletons\SingleLong.cs" />
-        <Compile Include="Network\Packages\Singletons\SingleString.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
