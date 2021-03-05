@@ -21,21 +21,21 @@ namespace OnlineChessCore.Game.Pieces
 
             if (Side == Player.White)
             {
-                coordsList.AddRange(HandleCoords(board, -1, false, (c) => c - 8, updateBlockingPieces));
-                coordsList.AddRange(HandleCoords(board, 7, true, (c) => c - 7, updateBlockingPieces));
-                coordsList.AddRange(HandleCoords(board, 0, true, (c) => c - 9, updateBlockingPieces));
+                coordsList.AddRange(HandleCoords(board, -1, false, (c) => c - 8, updateBlockingPieces, xRay));
+                coordsList.AddRange(HandleCoords(board, 7, true, (c) => c - 7, updateBlockingPieces, xRay));
+                coordsList.AddRange(HandleCoords(board, 0, true, (c) => c - 9, updateBlockingPieces, xRay));
                 
                 if(!HasMoved)
-                    coordsList.AddRange(HandleCoords(board, -1, false, (c) => c - 16, updateBlockingPieces));
+                    coordsList.AddRange(HandleCoords(board, -1, false, (c) => c - 16, updateBlockingPieces, xRay));
             }
             else
             {
-                coordsList.AddRange(HandleCoords(board, -1, false, (c) => c + 8, updateBlockingPieces));
-                coordsList.AddRange(HandleCoords(board, 0, true, (c) => c + 7, updateBlockingPieces));
-                coordsList.AddRange(HandleCoords(board, 7, true, (c) => c + 9, updateBlockingPieces));
+                coordsList.AddRange(HandleCoords(board, -1, false, (c) => c + 8, updateBlockingPieces, xRay));
+                coordsList.AddRange(HandleCoords(board, 0, true, (c) => c + 7, updateBlockingPieces, xRay));
+                coordsList.AddRange(HandleCoords(board, 7, true, (c) => c + 9, updateBlockingPieces, xRay));
                 
                 if(!HasMoved)
-                    coordsList.AddRange(HandleCoords(board, -1, false, (c) => c + 16, updateBlockingPieces));
+                    coordsList.AddRange(HandleCoords(board, -1, false, (c) => c + 16, updateBlockingPieces, xRay));
             }
 
             return coordsList;
@@ -49,12 +49,13 @@ namespace OnlineChessCore.Game.Pieces
         /// <param name="takeOver"></param>
         /// <param name="op"></param>
         /// <param name="updateBlockingPieces"></param>
+        /// <param name="xRay">King can't take over if this pawn is targeted by its own piece</param>
         /// <returns></returns>
-        private List<Coords> HandleCoords(Tile[] board, int corner, bool takeOver, Func<int, int> op, bool updateBlockingPieces)
+        private List<Coords> HandleCoords(Tile[] board, int corner, bool takeOver, Func<int, int> op, bool updateBlockingPieces, bool xRay)
         {
             List<Coords> coordsList = new List<Coords>();
 
-            if (!ValidCoordinate(board, (Coords) op((int) Coords), corner))
+            if (!ValidCoordinate(board, (Coords) op((int) Coords), corner, xRay))
                 return FilterKingProtectionCoords(coordsList);
             
             if(takeOver ^ board.HasPawnOnTile((Coords) op((int) Coords)))
