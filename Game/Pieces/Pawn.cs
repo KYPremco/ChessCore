@@ -41,6 +41,15 @@ namespace OnlineChessCore.Game.Pieces
             return coordsList;
         }
 
+        /// <summary>
+        /// Reusable method for calculating valid position within the board
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="corner"></param>
+        /// <param name="takeOver"></param>
+        /// <param name="op"></param>
+        /// <param name="updateBlockingPieces"></param>
+        /// <returns></returns>
         private List<Coords> HandleCoords(Tile[] board, int corner, bool takeOver, Func<int, int> op, bool updateBlockingPieces)
         {
             List<Coords> coordsList = new List<Coords>();
@@ -59,6 +68,10 @@ namespace OnlineChessCore.Game.Pieces
             return FilterKingProtectionCoords(coordsList);
         }
         
+        /// <summary>
+        /// Rook has switched from original place
+        /// </summary>
+        /// <param name="coords"></param>
         internal override void Move(Coords coords)
         {
             Coords = coords;

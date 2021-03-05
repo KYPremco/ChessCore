@@ -17,7 +17,7 @@ namespace OnlineChessCore.Game.Pieces
         {
             Checks = new List<Attack>();
         }
-
+        
         protected override List<Coords> AvailableCoords(Tile[] board, bool xRay, bool updateBlockingPieces)
         {
             List<Coords> coordsList = new List<Coords>();
@@ -34,6 +34,13 @@ namespace OnlineChessCore.Game.Pieces
             return coordsList;
         }
         
+        /// <summary>
+        /// Reusable method for calculating valid position within the board
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="corner"></param>
+        /// <param name="op"></param>
+        /// <returns></returns>
         private IEnumerable<Coords> HandleCoords(Tile[] board, int corner, Func<int, int> op)
         {
             List<Coords> coordsList = new List<Coords>();
@@ -46,7 +53,11 @@ namespace OnlineChessCore.Game.Pieces
 
             return coordsList;
         }
-
+        
+        /// <summary>
+        /// King has switched from original place
+        /// </summary>
+        /// <param name="coords"></param>
         internal override void Move(Coords coords)
         {
             Coords = coords;

@@ -21,6 +21,9 @@ namespace OnlineChessCore.Game
             UpdateBlockingPieces(Board.BlackPieces, Board.WhitePieces);
         }
 
+        /// <summary>
+        /// Load the game board in with the given starting pieces
+        /// </summary>
         private void LoadTiles()
         {
             for (int i = 0; i < 64; i++)
@@ -35,6 +38,10 @@ namespace OnlineChessCore.Game
             }
         }
 
+        /// <summary>
+        /// Adds pieces to the correct board list
+        /// </summary>
+        /// <param name="piece"></param>
         private void AddPieceToBoard(Piece piece)
         {
             if (piece.Side == Player.White)
@@ -61,6 +68,9 @@ namespace OnlineChessCore.Game
             }
         }
 
+        /// <summary>
+        /// Updates the game cycle which player can move and refresh the state of the board
+        /// </summary>
         private void UpdateGameCycle()
         {
             SwitchPlayer();
@@ -71,6 +81,11 @@ namespace OnlineChessCore.Game
             UpdateBlockingPieces(Board.BlackPieces, Board.WhitePieces);
         }
 
+        /// <summary>
+        /// Pre-compute the pieces that are keeping the king safe
+        /// </summary>
+        /// <param name="friendlyPieces"></param>
+        /// <param name="enemyPieces"></param>
         private void UpdateBlockingPieces(List<Piece> friendlyPieces, List<Piece> enemyPieces)
         {
             foreach (Piece piece in friendlyPieces)
@@ -84,6 +99,12 @@ namespace OnlineChessCore.Game
             }
         }
 
+        /// <summary>
+        /// Get available coordinates from given piece making sure that all chess rules are applied
+        /// </summary>
+        /// <param name="piece"></param>
+        /// <param name="xRay"></param>
+        /// <returns></returns>
         public List<Coords> GetAvailableCoords(Piece piece, bool xRay = false)
         {
             if (piece.EPiece == EPiece.King)
@@ -98,6 +119,13 @@ namespace OnlineChessCore.Game
                 .ToList();
         }
 
+        /// <summary>
+        /// Gets all coordinates from a given player, may ignore king coordinates to prevent looping
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="ignoreKing"></param>
+        /// <param name="xRay"></param>
+        /// <returns></returns>
         public List<Coords> GetAllAvailableCoords(Player player, bool ignoreKing = false, bool xRay = false)
         {
             List<Coords> availableCoords =
@@ -113,6 +141,12 @@ namespace OnlineChessCore.Game
                 .ToList();
         }
 
+        /// <summary>
+        /// Gets all available coordinates from given list
+        /// </summary>
+        /// <param name="pieceList"></param>
+        /// <param name="xRay"></param>
+        /// <returns></returns>
         private List<Coords> GetAllAvailableCoords(List<Piece> pieceList, bool xRay)
         {
             return pieceList
@@ -120,6 +154,11 @@ namespace OnlineChessCore.Game
                 .ToList();
         }
 
+        /// <summary>
+        /// Coordinates king can move to
+        /// </summary>
+        /// <param name="king"></param>
+        /// <returns></returns>
         private List<Coords> GetKingAvailableCoords(King king)
         {
             return king
@@ -133,6 +172,11 @@ namespace OnlineChessCore.Game
                 .ToList();
         }
 
+        /// <summary>
+        /// Unique rule checking for king castling 
+        /// </summary>
+        /// <param name="king"></param>
+        /// <returns>returns king positions when castling is possible</returns>
         private List<Coords> GetKingCastlingCoords(King king)
         {
             List<Coords> castling = new List<Coords>();
@@ -160,6 +204,12 @@ namespace OnlineChessCore.Game
             return castling;
         }
 
+        /// <summary>
+        /// Moves pieces if possible, activates gameCycle
+        /// </summary>
+        /// <param name="oldCoords"></param>
+        /// <param name="newCoords"></param>
+        /// <returns>Returns true when piece was moved</returns>
         public bool MovePiece(Coords oldCoords, Coords newCoords)
         {
             Piece piece = Board.Tiles[(int) oldCoords].Piece;
@@ -180,6 +230,12 @@ namespace OnlineChessCore.Game
             return true;
         }
         
+        /// <summary>
+        /// Unique move for castling
+        /// </summary>
+        /// <param name="oldCoords"></param>
+        /// <param name="newCoords"></param>
+        /// <returns>returns false if castling was not activated</returns>
         public bool MoveCastling(Coords oldCoords, Coords newCoords)
         {
             Tile king = Board.Tiles[(int) oldCoords];
@@ -214,6 +270,10 @@ namespace OnlineChessCore.Game
             return true;
         }
 
+        /// <summary>
+        /// Moves the taken over piece to the correct list.
+        /// </summary>
+        /// <param name="piece"></param>
         private void TakeOverPiece(Piece piece)
         {
             if (piece.Side == Player.White)
@@ -228,6 +288,9 @@ namespace OnlineChessCore.Game
             }
         }
 
+        /// <summary>
+        /// Swaps player that can move a piece
+        /// </summary>
         private void SwitchPlayer()
         {
             Turn = Turn == Player.White ? Player.Black : Player.White;

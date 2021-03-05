@@ -3,6 +3,9 @@ using OnlineChessCore.Game.Pieces;
 
 namespace OnlineChessCore.Game.Board
 {
+    /// <summary>
+    /// Numeric to chess board locations
+    /// </summary>
     public enum Coords
     {
         A8, B8, C8, D8, E8, F8, G8, H8,
@@ -17,11 +20,22 @@ namespace OnlineChessCore.Game.Board
 
     public static class CoordsHelper
     {
+        /// <summary>
+        /// Finds out what row the coordinates are in
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <returns></returns>
         public static int Row(this Coords coords)
         {
             return (int) coords == 0 ? 0 : (int) coords / 8;
         }
         
+        /// <summary>
+        /// Finds out what row the coordinates are in with a reversed perspective
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <param name="reversed"></param>
+        /// <returns></returns>
         public static int Row(this Coords coords, bool reversed)
         {
             if(reversed)
@@ -29,11 +43,22 @@ namespace OnlineChessCore.Game.Board
             return coords.Row();
         }
         
+        /// <summary>
+        /// Finds out what column the coordinates are in
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <returns></returns>
         public static int Column(this Coords coords)
         {
             return (int) coords % 8;
         }
 
+        /// <summary>
+        /// Finds out what row the coordinates are in with a reversed perspective
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <param name="reversed"></param>
+        /// <returns></returns>
         public static int Column(this Coords coords, bool reversed)
         {
             if(reversed)
@@ -41,6 +66,11 @@ namespace OnlineChessCore.Game.Board
             return coords.Column();
         }
         
+        /// <summary>
+        /// Finds out if coordinate tile is white
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <returns></returns>
         public static bool IsWhiteTile(this Coords coords)
         {
             bool reverseTile = coords.Row() % 2 != 0;
@@ -48,21 +78,40 @@ namespace OnlineChessCore.Game.Board
             return reverseTile ? !whiteTile : whiteTile;
         }
 
+        /// <summary>
+        /// Is given coordinate inside the board
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <returns></returns>
         public static bool IsInsideBoard(this Coords coords)
         {
             return (int)coords >= 0 && (int)coords <= 63;
         }
 
+        /// <summary>
+        /// Has given coordinate a starting piece
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <returns></returns>
         public static bool HasStartingPiece(this Coords coords)
         {
             return StartingPoints().ContainsKey(coords);
         }
         
+        /// <summary>
+        /// Returns starting piece
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <returns></returns>
         public static Piece GetStartingPiece(this Coords coords)
         {
             return StartingPoints()[coords];
         }
         
+        /// <summary>
+        /// All starting positions
+        /// </summary>
+        /// <returns></returns>
         private static Dictionary<Coords, Piece> StartingPoints()
         {
             Dictionary<Coords, Piece> dictionary = new Dictionary<Coords, Piece>();

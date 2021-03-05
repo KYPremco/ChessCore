@@ -33,6 +33,14 @@ namespace OnlineChessCore.Game.Pieces
             return coordsList;
         }
 
+        /// <summary>
+        /// Reusable method for calculating valid position within the board
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="corner"></param>
+        /// <param name="op"></param>
+        /// <param name="updateBlockingPieces"></param>
+        /// <returns></returns>
         private List<Coords> HandleCoords(Tile[] board, ICollection<int> corner, Func<int, int> op, bool updateBlockingPieces)
         {
             List<Coords> coordsList = new List<Coords>();

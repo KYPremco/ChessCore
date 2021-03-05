@@ -23,18 +23,40 @@ namespace OnlineChessCore.Game.Pieces
             Blocking = new List<Attack>();
         }
         
+        /// <summary>
+        /// Abstract method for receiving available coords without rules for given piece
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="xRay">Adds available coord to take over own pieces</param>
+        /// <param name="updateBlockingPieces">Will trigger @HandlingBlocking @HandleKingTarget</param>
+        /// <returns></returns>
         protected abstract List<Coords> AvailableCoords(Tile[] board, bool xRay, bool updateBlockingPieces);
 
+        /// <summary>
+        /// Get available coords for given piece
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="xRay">Adds available coord to take over own pieces</param>
+        /// <returns></returns>
         internal List<Coords> AvailableCoords(Tile[] board, bool xRay = false)
         {
             return AvailableCoords(board, xRay, false);
         }
         
+        /// <summary>
+        /// Updates blocking and targeting, @HandleBlocking & HandleTargetKing
+        /// </summary>
+        /// <param name="board"></param>
         internal void UpdateAvailableCoords(Tile[] board)
         {
             AvailableCoords(board, false, true);
         }
         
+        /// <summary>
+        /// Filters out normal coords when a piece is blocking, can only move in same direction or taking over attacking piece
+        /// </summary>
+        /// <param name="availableCoordsList"></param>
+        /// <returns></returns>
         protected List<Coords> FilterKingProtectionCoords(List<Coords> availableCoordsList)
         {
             if(Blocking.Count < 1)
@@ -46,6 +68,14 @@ namespace OnlineChessCore.Game.Pieces
                 .ToList();
         }
         
+        /// <summary>
+        /// General Check if a given coordinate is valid
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="coords"></param>
+        /// <param name="sideCorner"></param>
+        /// <param name="ignoreOwnPiece">Ignores the check that you can't take over your own pieces</param>
+        /// <returns></returns>
         protected bool ValidCoordinate(Tile[] board, Coords coords, int sideCorner, bool ignoreOwnPiece = false)
         {
             if (!coords.IsInsideBoard())
@@ -60,6 +90,15 @@ namespace OnlineChessCore.Game.Pieces
             return true;
         }
         
+        /// <summary>
+        /// Function will trigger when updateBlockingPieces is true and given piece targeted an enemy
+        /// Will check if piece can attack king when targeting piece moves away
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="blockingPiece"></param>
+        /// <param name="op"></param>
+        /// <param name="corner"></param>
+        /// <param name="rotation"></param>
         protected void HandleBlocking(Tile[] board, Piece blockingPiece, Func<int, int, int> op, int corner, int rotation)
         {
             while (true)
@@ -81,6 +120,11 @@ namespace OnlineChessCore.Game.Pieces
             }
         }
 
+        /// <summary>
+        /// Handles targeting king for pieces that don't have line of sight movements
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="coordinate"></param>
         protected void HandleTargetKing(Tile[] board, Coords coordinate)
         {
             if (!board.HasPawnOnTile(coordinate) || board[(int) coordinate]?.Piece.EPiece != EPiece.King)
@@ -89,6 +133,13 @@ namespace OnlineChessCore.Game.Pieces
             ((King) board[(int) coordinate].Piece).Checks.Add(new Attack(Coords, false));
         }
         
+        /// <summary>
+        /// Handles targeting king for pieces that have line of sight movement
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="op"></param>
+        /// <param name="corner"></param>
+        /// <param name="rotation"></param>
         protected void HandleTargetKing(Tile[] board, Func<int, int, int> op, int corner, int rotation)
         {
             if (board[op((int) Coords, rotation)].Piece.EPiece != EPiece.King)
@@ -97,6 +148,16 @@ namespace OnlineChessCore.Game.Pieces
             ((King) board[op((int) Coords, rotation)].Piece).Checks.AddRange(GetAttackLine(board, op, rotation, corner));
         }
         
+        /// <summary>
+        /// Calculates the attack line of sight to the target
+        /// Ghost targets are still able to attack when moved but can't be blocked by other pieces
+        /// Attack line includes attacking pieces coords
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="op"></param>
+        /// <param name="rotation"></param>
+        /// <param name="corner"></param>
+        /// <returns></returns>
         private List<Attack> GetAttackLine(Tile[] board, Func<int, int, int> op, int rotation, int corner)
         {
             List<Attack> attackList = new List<Attack>();
@@ -132,6 +193,10 @@ namespace OnlineChessCore.Game.Pieces
             return attackList.Distinct().ToList();
         }
 
+        /// <summary>
+        /// Updates Coordinates of moved piece
+        /// </summary>
+        /// <param name="coords"></param>
         internal virtual void Move(Coords coords)
         {
             Coords = coords;
