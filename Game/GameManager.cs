@@ -141,14 +141,17 @@ namespace OnlineChessCore.Game
                 return castling;
             
             List<Coords> availableAttacks = GetAllAvailableCoords(king.Side == Player.White ? Player.Black : Player.White, true);
-
+            King enemyKing = king.Side == Player.White ? Board.BlackKing : Board.WhiteKing;
+            
             if (!availableAttacks.Contains(king.Coords + 2) 
+                && !enemyKing.AvailableCoords(Board.Tiles).Contains(king.Coords + 2)
                 && !availableAttacks.Contains(king.Coords + 1)
                 && Board.Tiles[(int)king.Coords + 4].Piece?.EPiece == EPiece.Rook
                 && !((Rook)Board.Tiles[(int)king.Coords + 4].Piece).HasMoved)
                 castling.Add(king.Coords + 2);
             
             if (!availableAttacks.Contains(king.Coords - 2) 
+                && !enemyKing.AvailableCoords(Board.Tiles).Contains(king.Coords - 2)
                 && !availableAttacks.Contains(king.Coords - 1)
                 && Board.Tiles[(int)king.Coords - 3].Piece?.EPiece == EPiece.Rook
                 && !((Rook)Board.Tiles[(int)king.Coords - 3].Piece).HasMoved)
