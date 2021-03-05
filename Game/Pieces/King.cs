@@ -30,9 +30,6 @@ namespace OnlineChessCore.Game.Pieces
             coordsList.AddRange(HandleCoords(board, 7, (c) => c + 9));
             coordsList.AddRange(HandleCoords(board, 7, (c) => c - 7));
             coordsList.AddRange(HandleCoords(board, 0, (c) => c - 9));
-            
-            //Castling rule
-
 
             return coordsList;
         }
@@ -48,13 +45,6 @@ namespace OnlineChessCore.Game.Pieces
             coordsList.Add((Coords) op((int) Coords));
 
             return coordsList;
-        }
-        
-        private IEnumerable<Coords> Castling()
-        {
-            return new List<Coords>();
-            // board[op((int) Coords)].IsActive = true;
-            // coordsList.Add((Coords) op((int) Coords));
         }
 
         internal override void Move(Coords coords)
