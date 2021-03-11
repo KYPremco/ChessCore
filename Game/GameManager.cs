@@ -260,12 +260,16 @@ namespace OnlineChessCore.Game
                 //Rook
                 Board.Tiles[(int) rookTile.Coords - 3].Piece = rookTile.Piece;
                 rookTile.Piece.Move(rookTile.Coords - 3);
-                OnPieceMoved(rookTile.Piece, rookTile.Coords, rookTile.Coords - 3);
-                
+
                 //King
                 Board.Tiles[(int) kingTile.Coords + 2].Piece = kingTile.Piece;
                 kingTile.Piece.Move(kingTile.Coords + 2);
-                OnPieceMoved(kingTile.Piece, kingTile.Coords, rookTile.Coords + 2);
+                
+                //Update
+                Board.Tiles[(int) fromCoords].Piece = null;
+                Board.Tiles[(int) newCoords + fixRookCoords].Piece = null;
+                OnPieceMoved(rookTile.Piece, rookTile.Coords, rookTile.Coords - 3);
+                OnPieceMoved(kingTile.Piece, kingTile.Coords, kingTile.Coords + 2);
             }
             else
             {
@@ -278,10 +282,14 @@ namespace OnlineChessCore.Game
                 Board.Tiles[(int) kingTile.Coords - 2].Piece = kingTile.Piece;
                 kingTile.Piece.Move(kingTile.Coords - 2);
                 OnPieceMoved(kingTile.Piece, kingTile.Coords, kingTile.Coords - 2);
+                
+                //Update
+                Board.Tiles[(int) fromCoords].Piece = null;
+                Board.Tiles[(int) newCoords + fixRookCoords].Piece = null;
+                OnPieceMoved(rookTile.Piece, rookTile.Coords, rookTile.Coords + 2);
+                OnPieceMoved(kingTile.Piece, kingTile.Coords, kingTile.Coords - 2);
             }
-            Board.Tiles[(int) fromCoords].Piece = null;
-            Board.Tiles[(int) newCoords + fixRookCoords].Piece = null;
-            
+
             UpdateGameCycle();
             return true;
         }
