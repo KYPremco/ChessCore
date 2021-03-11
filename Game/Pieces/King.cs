@@ -47,8 +47,7 @@ namespace OnlineChessCore.Game.Pieces
             
             if(!ValidCoordinate(board, (Coords) op((int) Coords), corner))
                 return coordsList;
-
-            board[op((int) Coords)].IsActive = true;
+            
             coordsList.Add((Coords) op((int) Coords));
 
             return coordsList;

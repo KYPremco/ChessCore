@@ -8,26 +8,17 @@ namespace OnlineChessCore.Game.Board
 
         private Piece _piece;
 
-        private bool _isActive;
-
         public Coords Coords => _coords;
 
         public Tile(Coords coords)
         {
             _coords = coords;
-            _isActive = false;
         }
 
         public Piece Piece
         {
             get => _piece;
             set => _piece = value;
-        }
-
-        public bool IsActive
-        {
-            get => _isActive;
-            set => _isActive = value;
         }
     }
 }

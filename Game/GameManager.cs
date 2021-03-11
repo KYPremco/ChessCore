@@ -2,23 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using OnlineChessCore.Game.Board;
+using OnlineChessCore.Game.Events;
 using OnlineChessCore.Game.Pieces;
 
 namespace OnlineChessCore.Game
 {
-    public class Game
+    public class GameManager : GameEvents
     {
         public Player Turn { get; private set; }
 
         public Board.Board Board { get; }
 
-        public Game()
+        public GameManager()
         {
             Board = new Board.Board();
             Turn = Player.White;
+        }
+        
+        public void Start()
+        {
             LoadTiles();
             UpdateBlockingPieces(Board.WhitePieces, Board.BlackPieces);
             UpdateBlockingPieces(Board.BlackPieces, Board.WhitePieces);
+            OnLoaded(Board.Tiles);
         }
 
         /// <summary>
@@ -207,63 +213,73 @@ namespace OnlineChessCore.Game
         /// <summary>
         /// Moves pieces if possible, activates gameCycle
         /// </summary>
-        /// <param name="oldCoords"></param>
+        /// <param name="fromCoords"></param>
         /// <param name="newCoords"></param>
         /// <returns>Returns true when piece was moved</returns>
-        public bool MovePiece(Coords oldCoords, Coords newCoords)
+        public void MovePiece(Coords fromCoords, Coords newCoords)
         {
-            Piece piece = Board.Tiles[(int) oldCoords].Piece;
+            Piece piece = Board.Tiles[(int) fromCoords].Piece;
             if (piece.Side != Turn || !GetAvailableCoords(piece).Contains(newCoords))
-                return false;
+                return;
 
-            if (MoveCastling(oldCoords, newCoords))
-                return true;
+            if (MoveCastling(fromCoords, newCoords))
+                return;
             
             if (Board.Tiles.HasPawnOnTile(newCoords))
                 TakeOverPiece(Board.Tiles[(int) newCoords].Piece);
 
             piece.Move(newCoords);
-            Board.Tiles[(int) oldCoords].Piece = null;
+            Board.Tiles[(int) fromCoords].Piece = null;
             Board.Tiles[(int) newCoords].Piece = piece;
 
             UpdateGameCycle();
-            return true;
+            OnPieceMoved(piece, fromCoords, newCoords);
         }
         
         /// <summary>
         /// Unique move for castling
         /// </summary>
-        /// <param name="oldCoords"></param>
+        /// <param name="fromCoords"></param>
         /// <param name="newCoords"></param>
         /// <returns>returns false if castling was not activated</returns>
-        public bool MoveCastling(Coords oldCoords, Coords newCoords)
+        private bool MoveCastling(Coords fromCoords, Coords newCoords)
         {
-            Tile king = Board.Tiles[(int) oldCoords];
+            Tile kingTile = Board.Tiles[(int) fromCoords];
 
-            if (king.Piece.EPiece != EPiece.King || ((King)king.Piece).HasMoved)
+            if (kingTile.Piece.EPiece != EPiece.King || ((King)kingTile.Piece).HasMoved)
                 return false;
             
             int fixRookCoords = newCoords.Column() == 5 ? 2 : -1;
-            Tile rook = Board.Tiles[(int) newCoords + fixRookCoords];
+            Tile rookTile = Board.Tiles[(int) newCoords + fixRookCoords];
 
-            if (king.Piece?.EPiece != EPiece.King || rook.Piece?.EPiece != EPiece.Rook || king.Piece?.Side != rook.Piece?.Side)
+            if (kingTile.Piece?.EPiece != EPiece.King || rookTile.Piece?.EPiece != EPiece.Rook || kingTile.Piece?.Side != rookTile.Piece?.Side)
                 return false;
             
-            if (rook.Coords.Column() == 7)
+            if (rookTile.Coords.Column() == 7)
             {
-                Board.Tiles[(int) rook.Coords - 3].Piece = rook.Piece;
-                rook.Piece.Move(rook.Coords - 3);
-                Board.Tiles[(int) king.Coords + 2].Piece = king.Piece;
-                king.Piece.Move(king.Coords + 2);
+                //Rook
+                Board.Tiles[(int) rookTile.Coords - 3].Piece = rookTile.Piece;
+                rookTile.Piece.Move(rookTile.Coords - 3);
+                OnPieceMoved(rookTile.Piece, rookTile.Coords, rookTile.Coords - 3);
+                
+                //King
+                Board.Tiles[(int) kingTile.Coords + 2].Piece = kingTile.Piece;
+                kingTile.Piece.Move(kingTile.Coords + 2);
+                OnPieceMoved(kingTile.Piece, kingTile.Coords, rookTile.Coords + 2);
             }
             else
             {
-                Board.Tiles[(int) rook.Coords + 2].Piece = rook.Piece;
-                rook.Piece.Move(rook.Coords + 2);
-                Board.Tiles[(int) king.Coords - 2].Piece = king.Piece;
-                king.Piece.Move(king.Coords - 2);
+                //Rook
+                Board.Tiles[(int) rookTile.Coords + 2].Piece = rookTile.Piece;
+                rookTile.Piece.Move(rookTile.Coords + 2);
+                OnPieceMoved(rookTile.Piece, rookTile.Coords, rookTile.Coords + 2);
+                
+                //King
+                Board.Tiles[(int) kingTile.Coords - 2].Piece = kingTile.Piece;
+                kingTile.Piece.Move(kingTile.Coords - 2);
+                OnPieceMoved(kingTile.Piece, kingTile.Coords, kingTile.Coords - 2);
             }
-            Board.Tiles[(int) oldCoords].Piece = null;
+            Board.Tiles[(int) fromCoords].Piece = null;
             Board.Tiles[(int) newCoords + fixRookCoords].Piece = null;
             
             UpdateGameCycle();
@@ -279,13 +295,12 @@ namespace OnlineChessCore.Game
             if (piece.Side == Player.White)
             {
                 Board.WhitePieces.Remove(piece);
-                Board.WhitePiecesTaken.Add(piece);
             }
             else
             {
                 Board.BlackPieces.Remove(piece);
-                Board.BlackPiecesTaken.Add(piece);
             }
+            OnPieceTakenOver(piece, piece.Coords);
         }
 
         /// <summary>

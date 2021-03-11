@@ -48,6 +48,12 @@
         <Compile Include="Game\Board\BoardHelper.cs" />
         <Compile Include="Game\Board\Coords.cs" />
         <Compile Include="Game\Board\Tile.cs" />
+        <Compile Include="Game\Events\Args\AvailableCoordsEventArgs.cs" />
+        <Compile Include="Game\Events\Args\LoadedArgs.cs" />
+        <Compile Include="Game\Events\Args\PawnUpgradedArgs.cs" />
+        <Compile Include="Game\Events\Args\PieceMovedArgs.cs" />
+        <Compile Include="Game\Events\Args\PieceTakenOverArgs.cs" />
+        <Compile Include="Game\Events\GameEvents.cs" />
         <Compile Include="Game\GameManager.cs" />
         <Compile Include="Game\Pieces\Bishop.cs" />
         <Compile Include="Game\Pieces\EPiece.cs" />
@@ -57,7 +63,7 @@
         <Compile Include="Game\Pieces\Piece.cs" />
         <Compile Include="Game\Pieces\Queen.cs" />
         <Compile Include="Game\Pieces\Rook.cs" />
-        <Compile Include="Game\Player.cs" />
+        <Compile Include="Game\PieceColor.cs" />
         <Compile Include="Game\Struct\Attack.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

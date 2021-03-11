@@ -65,8 +65,7 @@ namespace OnlineChessCore.Game.Pieces
                     finished = true;
                 }
                     
-
-                board[(int) coordinate].IsActive = true;
+                
                 coordsList.Add(coordinate);
 
                 if (coordinate.Column() == corner)

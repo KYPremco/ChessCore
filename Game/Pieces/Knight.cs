@@ -51,7 +51,6 @@ namespace OnlineChessCore.Game.Pieces
                     return FilterKingProtectionCoords(coordsList);
             }
             
-            board[op((int) Coords)].IsActive = true;
             coordsList.Add((Coords) op((int) Coords));
             
             if(updateBlockingPieces)

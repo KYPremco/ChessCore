@@ -60,8 +60,7 @@ namespace OnlineChessCore.Game.Pieces
             
             if(takeOver ^ board.HasPawnOnTile((Coords) op((int) Coords)))
                 return FilterKingProtectionCoords(coordsList);
-
-            board[op((int) Coords)].IsActive = true;
+            
             coordsList.Add((Coords) op((int) Coords));
             
             if(updateBlockingPieces)
