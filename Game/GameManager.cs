@@ -9,14 +9,14 @@ namespace OnlineChessCore.Game
 {
     public class GameManager : GameEvents
     {
-        public Player Turn { get; private set; }
+        public PieceColor Turn { get; private set; }
 
         public Board.Board Board { get; }
 
         public GameManager()
         {
             Board = new Board.Board();
-            Turn = Player.White;
+            Turn = PieceColor.White;
         }
         
         public void Start()
@@ -50,7 +50,7 @@ namespace OnlineChessCore.Game
         /// <param name="piece"></param>
         private void AddPieceToBoard(Piece piece)
         {
-            if (piece.Side == Player.White)
+            if (piece.Side == PieceColor.White)
             {
                 if (piece.EPiece == EPiece.King)
                 {
@@ -116,7 +116,7 @@ namespace OnlineChessCore.Game
             if (piece.EPiece == EPiece.King)
                 return GetKingAvailableCoords((King) piece);
 
-            King king = piece.Side == Player.White ? Board.WhiteKing : Board.BlackKing;
+            King king = piece.Side == PieceColor.White ? Board.WhiteKing : Board.BlackKing;
             if (king.Checks.Count == 0)
                 return piece.AvailableCoords(Board.Tiles, xRay);
 
@@ -128,14 +128,14 @@ namespace OnlineChessCore.Game
         /// <summary>
         /// Gets all coordinates from a given player, may ignore king coordinates to prevent looping
         /// </summary>
-        /// <param name="player"></param>
+        /// <param name="pieceColor"></param>
         /// <param name="ignoreKing"></param>
         /// <param name="xRay"></param>
         /// <returns></returns>
-        public List<Coords> GetAllAvailableCoords(Player player, bool ignoreKing = false, bool xRay = false)
+        public List<Coords> GetAllAvailableCoords(PieceColor pieceColor, bool ignoreKing = false, bool xRay = false)
         {
             List<Coords> availableCoords =
-                GetAllAvailableCoords(player == Player.White ? Board.WhitePieces : Board.BlackPieces, xRay)
+                GetAllAvailableCoords(pieceColor == PieceColor.White ? Board.WhitePieces : Board.BlackPieces, xRay)
                     .Distinct()
                     .ToList();
 
@@ -143,7 +143,7 @@ namespace OnlineChessCore.Game
                 return availableCoords;
 
             return availableCoords
-                .Concat(GetKingAvailableCoords(player == Player.White ? Board.WhiteKing : Board.BlackKing))
+                .Concat(GetKingAvailableCoords(pieceColor == PieceColor.White ? Board.WhiteKing : Board.BlackKing))
                 .ToList();
         }
 
@@ -169,8 +169,8 @@ namespace OnlineChessCore.Game
         {
             return king
                 .AvailableCoords(Board.Tiles)
-                .Except(GetAllAvailableCoords(king.Side == Player.White ? Player.Black : Player.White, true, true))
-                .Except(king.Side == Player.White
+                .Except(GetAllAvailableCoords(king.Side == PieceColor.White ? PieceColor.Black : PieceColor.White, true, true))
+                .Except(king.Side == PieceColor.White
                     ? Board.BlackKing.AvailableCoords(Board.Tiles)
                     : Board.WhiteKing.AvailableCoords(Board.Tiles))
                 .Except(king.Checks.Where(x => x.IsGhost).Select(x => x.Coordinate))
@@ -190,8 +190,8 @@ namespace OnlineChessCore.Game
             if (king.HasMoved || king.Checks.Count > 0)
                 return castling;
             
-            List<Coords> availableAttacks = GetAllAvailableCoords(king.Side == Player.White ? Player.Black : Player.White, true);
-            King enemyKing = king.Side == Player.White ? Board.BlackKing : Board.WhiteKing;
+            List<Coords> availableAttacks = GetAllAvailableCoords(king.Side == PieceColor.White ? PieceColor.Black : PieceColor.White, true);
+            King enemyKing = king.Side == PieceColor.White ? Board.BlackKing : Board.WhiteKing;
             
             if (!availableAttacks.Contains(king.Coords + 2) 
                 && !enemyKing.AvailableCoords(Board.Tiles).Contains(king.Coords + 2)
@@ -292,7 +292,7 @@ namespace OnlineChessCore.Game
         /// <param name="piece"></param>
         private void TakeOverPiece(Piece piece)
         {
-            if (piece.Side == Player.White)
+            if (piece.Side == PieceColor.White)
             {
                 Board.WhitePieces.Remove(piece);
             }
@@ -308,7 +308,7 @@ namespace OnlineChessCore.Game
         /// </summary>
         private void SwitchPlayer()
         {
-            Turn = Turn == Player.White ? Player.Black : Player.White;
+            Turn = Turn == PieceColor.White ? PieceColor.Black : PieceColor.White;
         }
     }
 }

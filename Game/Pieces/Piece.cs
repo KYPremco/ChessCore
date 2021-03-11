@@ -12,11 +12,11 @@ namespace OnlineChessCore.Game.Pieces
         
         public virtual EPiece EPiece { get; }
         
-        public Player Side { get; }
+        public PieceColor Side { get; }
         
         internal List<Attack> Blocking { get; }
 
-        protected internal Piece(Coords coords, Player side)
+        protected internal Piece(Coords coords, PieceColor side)
         {
             Coords = coords;
             Side = side;

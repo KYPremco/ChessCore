@@ -10,7 +10,7 @@ namespace OnlineChessCore.Game.Pieces
 
         public bool HasMoved { get; set; }
 
-        public Rook(Coords coords, Player player) : base(coords, player)
+        public Rook(Coords coords, PieceColor pieceColor) : base(coords, pieceColor)
         {
 
         }

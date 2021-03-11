@@ -13,7 +13,7 @@ namespace OnlineChessCore.Game.Pieces
 
         internal List<Attack> Checks { get; }
 
-        public King(Coords coords, Player player) : base(coords, player)
+        public King(Coords coords, PieceColor pieceColor) : base(coords, pieceColor)
         {
             Checks = new List<Attack>();
         }

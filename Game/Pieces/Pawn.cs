@@ -10,7 +10,7 @@ namespace OnlineChessCore.Game.Pieces
         
         private bool HasMoved { get; set; }
 
-        public Pawn(Coords coords, Player player) : base(coords, player)
+        public Pawn(Coords coords, PieceColor pieceColor) : base(coords, pieceColor)
         {
 
         }
@@ -19,7 +19,7 @@ namespace OnlineChessCore.Game.Pieces
         {
             List<Coords> coordsList = new List<Coords>();
 
-            if (Side == Player.White)
+            if (Side == PieceColor.White)
             {
                 coordsList.AddRange(HandleCoords(board, -1, false, (c) => c - 8, updateBlockingPieces, xRay));
                 coordsList.AddRange(HandleCoords(board, 7, true, (c) => c - 7, updateBlockingPieces, xRay));

@@ -8,7 +8,7 @@ namespace OnlineChessCore.Game.Pieces
     {
         public override EPiece EPiece { get; } = EPiece.Knight;
         
-        public Knight(Coords coords, Player player): base(coords, player)
+        public Knight(Coords coords, PieceColor pieceColor): base(coords, pieceColor)
         {
 
         }

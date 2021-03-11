@@ -115,33 +115,33 @@ namespace OnlineChessCore.Game.Board
         private static Dictionary<Coords, Piece> StartingPoints()
         {
             Dictionary<Coords, Piece> dictionary = new Dictionary<Coords, Piece>();
-            dictionary.Add(Coords.A8, new Rook(Coords.A8, Player.Black));
-            dictionary.Add(Coords.B8, new Knight(Coords.B8, Player.Black));
-            dictionary.Add(Coords.C8, new Bishop(Coords.C8, Player.Black));
-            dictionary.Add(Coords.D8, new King(Coords.D8, Player.Black));
-            dictionary.Add(Coords.E8, new Queen(Coords.E8, Player.Black));
-            dictionary.Add(Coords.F8, new Bishop(Coords.F8, Player.Black));
-            dictionary.Add(Coords.G8, new Knight(Coords.G8, Player.Black));
-            dictionary.Add(Coords.H8, new Rook(Coords.H8, Player.Black));
+            dictionary.Add(Coords.A8, new Rook(Coords.A8, PieceColor.Black));
+            dictionary.Add(Coords.B8, new Knight(Coords.B8, PieceColor.Black));
+            dictionary.Add(Coords.C8, new Bishop(Coords.C8, PieceColor.Black));
+            dictionary.Add(Coords.D8, new King(Coords.D8, PieceColor.Black));
+            dictionary.Add(Coords.E8, new Queen(Coords.E8, PieceColor.Black));
+            dictionary.Add(Coords.F8, new Bishop(Coords.F8, PieceColor.Black));
+            dictionary.Add(Coords.G8, new Knight(Coords.G8, PieceColor.Black));
+            dictionary.Add(Coords.H8, new Rook(Coords.H8, PieceColor.Black));
 
             for (int i = (int)Coords.A7; i < (int)Coords.A7 + 8; i++)
             {
-                dictionary.Add((Coords)i, new Pawn((Coords)i, Player.Black));
+                dictionary.Add((Coords)i, new Pawn((Coords)i, PieceColor.Black));
             }
             
             for (int i = (int)Coords.A2; i < (int)Coords.A2 + 8; i++)
             {
-                dictionary.Add((Coords)i, new Pawn((Coords)i, Player.White));
+                dictionary.Add((Coords)i, new Pawn((Coords)i, PieceColor.White));
             }
 
-            dictionary.Add(Coords.A1, new Rook(Coords.A1, Player.White));
-            dictionary.Add(Coords.B1, new Knight(Coords.B1, Player.White));
-            dictionary.Add(Coords.C1, new Bishop(Coords.C1, Player.White));
-            dictionary.Add(Coords.D1, new King(Coords.D1, Player.White));
-            dictionary.Add(Coords.E1, new Queen(Coords.E1, Player.White));
-            dictionary.Add(Coords.F1, new Bishop(Coords.F1, Player.White));
-            dictionary.Add(Coords.G1, new Knight(Coords.G1, Player.White));
-            dictionary.Add(Coords.H1, new Rook(Coords.H1, Player.White));
+            dictionary.Add(Coords.A1, new Rook(Coords.A1, PieceColor.White));
+            dictionary.Add(Coords.B1, new Knight(Coords.B1, PieceColor.White));
+            dictionary.Add(Coords.C1, new Bishop(Coords.C1, PieceColor.White));
+            dictionary.Add(Coords.D1, new King(Coords.D1, PieceColor.White));
+            dictionary.Add(Coords.E1, new Queen(Coords.E1, PieceColor.White));
+            dictionary.Add(Coords.F1, new Bishop(Coords.F1, PieceColor.White));
+            dictionary.Add(Coords.G1, new Knight(Coords.G1, PieceColor.White));
+            dictionary.Add(Coords.H1, new Rook(Coords.H1, PieceColor.White));
             
             return dictionary;
         }
