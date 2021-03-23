@@ -64,7 +64,7 @@
         <Compile Include="Game\Pieces\Queen.cs" />
         <Compile Include="Game\Pieces\Rook.cs" />
         <Compile Include="Game\PieceColor.cs" />
-        <Compile Include="Game\Struct\Attack.cs" />
+        <Compile Include="Game\Struct\AttackCoord.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>

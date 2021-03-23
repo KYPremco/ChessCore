@@ -121,7 +121,7 @@ namespace OnlineChessCore.Game
                 return piece.AvailableCoords(Board.Tiles, xRay);
 
             return piece.AvailableCoords(Board.Tiles, xRay)
-                .Intersect(king.Checks.Where(x => !x.IsGhost).Select(x => x.Coordinate))
+                .Intersect(king.Checks.Where(x => x.IsAttackBlockable).Select(x => x.Coordinate))
                 .ToList();
         }
 
@@ -173,7 +173,7 @@ namespace OnlineChessCore.Game
                 .Except(king.Side == PieceColor.White
                     ? Board.BlackKing.AvailableCoords(Board.Tiles)
                     : Board.WhiteKing.AvailableCoords(Board.Tiles))
-                .Except(king.Checks.Where(x => x.IsGhost).Select(x => x.Coordinate))
+                .Except(king.Checks.Where(x => !x.IsAttackBlockable).Select(x => x.Coordinate))
                 .Concat(GetKingCastlingCoords(king))
                 .ToList();
         }

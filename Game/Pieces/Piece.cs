@@ -14,13 +14,13 @@ namespace OnlineChessCore.Game.Pieces
         
         public PieceColor Side { get; }
         
-        internal List<Attack> Blocking { get; }
+        internal List<AttackCoord> Blocking { get; }
 
         protected internal Piece(Coords coords, PieceColor side)
         {
             Coords = coords;
             Side = side;
-            Blocking = new List<Attack>();
+            Blocking = new List<AttackCoord>();
         }
         
         /// <summary>
@@ -130,7 +130,7 @@ namespace OnlineChessCore.Game.Pieces
             if (!board.HasPawnOnTile(coordinate) || board[(int) coordinate]?.Piece.EPiece != EPiece.King)
                 return;
             
-            ((King) board[(int) coordinate].Piece).Checks.Add(new Attack(Coords, false));
+            ((King) board[(int) coordinate].Piece).Checks.Add(new AttackCoord(Coords, true));
         }
         
         /// <summary>
@@ -158,13 +158,13 @@ namespace OnlineChessCore.Game.Pieces
         /// <param name="rotation"></param>
         /// <param name="corner"></param>
         /// <returns></returns>
-        private List<Attack> GetAttackLine(Tile[] board, Func<int, int, int> op, int rotation, int corner)
+        private List<AttackCoord> GetAttackLine(Tile[] board, Func<int, int, int> op, int rotation, int corner)
         {
-            List<Attack> attackList = new List<Attack>();
+            List<AttackCoord> attackList = new List<AttackCoord>();
 
             bool finished = false;
             bool outOfBounds = false;
-            bool ghost = true;
+            bool isAttackBlockable = false;
             while (!finished)
             {
                 Coords coordinate = (Coords) op((int) Coords, rotation);
@@ -179,14 +179,14 @@ namespace OnlineChessCore.Game.Pieces
                 if (board.HasPawnOnTile(coordinate))
                 {
                     if (outOfBounds && board[(int) coordinate].Piece.EPiece == EPiece.King)
-                        ghost = false;
+                        isAttackBlockable = true;
                     
                     if(board[(int) coordinate].Piece == this)
                         finished = true;
                 }
                     
 
-                attackList.Add(new Attack(coordinate, ghost));
+                attackList.Add(new AttackCoord(coordinate, isAttackBlockable));
                 rotation = outOfBounds ? rotation - 1 : rotation + 1;
             }
 

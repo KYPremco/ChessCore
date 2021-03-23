@@ -2,7 +2,7 @@
 
 namespace OnlineChessCore.Game.Struct
 {
-    public readonly struct Attack
+    public readonly struct AttackCoord
     {
         /// <summary>
         /// Coordinate of attack
@@ -12,12 +12,12 @@ namespace OnlineChessCore.Game.Struct
         /// <summary>
         /// Placing another piece on a ghost doesn't block trajectory 
         /// </summary>
-        public bool IsGhost { get; }
+        public bool IsAttackBlockable { get; }
         
-        public Attack(Coords coordinate, bool isGhost)
+        public AttackCoord(Coords coordinate, bool isAttackBlockable)
         {
             Coordinate = coordinate;
-            IsGhost = isGhost;
+            IsAttackBlockable = isAttackBlockable;
         }
     }
 }
